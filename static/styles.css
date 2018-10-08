@@ -1,0 +1,50 @@
+*{
+	font-family: "Helvetica Neue Bold", Roboto, Helvetica, Arial, sans-serif;
+	font-weight: 700;
+}
+.glyphicon {
+	margin-right: 10px;
+}
+.top-menu {
+	padding-top: 15px;
+    padding-bottom: 15px;
+    height: 50px;
+    background-color:  beige;
+    font-size: 18;
+}
+.content {
+    margin-top: 5%;
+    
+}
+.main-content {
+    background-color: #42C3C9;
+    border-radius: 10px;
+    display: inline-flex;
+    min-height: 200px;
+}
+.recentItems {
+    margin-left: 3%;
+}
+.divider.blue {
+    background-color: #42C3C9;
+    height: 10px;
+}
+
+.container {
+    width: 100%;
+    
+}
+
+.header-left {
+    display: inline-flex;
+    
+}
+.header-left p {
+    margin-left: 25%;
+    font-size: 28;
+    line-height: 16px;
+}
+
+body {
+    background-color: beige;
+}
