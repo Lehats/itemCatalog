@@ -54,6 +54,24 @@ Category2 = Categories(name='Brakes and traction control')
 session.add(Category2)
 session.commit()
 
+# Category 3
+Category3 = Categories(name='Drivetrain')
+
+session.add(Category3)
+session.commit()
+
+# Category 4
+Category4 = Categories(name='Belt drive')
+
+session.add(Category4)
+session.commit()
+
+# Category 5
+Category5 = Categories(name='Ignition')
+
+session.add(Category5)
+session.commit()
+
 # Part 1
 Part1 = Parts(name='Alternator', description = "Contrary to popular belief your battery isn't in charge of"
             "powering everything in your vehicle. Without an alternator, your car battery can't "
@@ -85,5 +103,56 @@ Part3 = Parts(name='Brakedisk', description = "Sometimes it is not good enough t
 session.add(Part3)
 session.commit()
 
+#Part 4
+Part4 = Parts(name='CV axle', description = "If you're tired of hearing loud noises as you accelerate "
+"down the freeway, it's probably time to replace that CV (constant velocity) axle, which is primarily "
+"used in front-wheel drive vehicles. Without a properly functioning CV axle, your ride can have problems "
+"turning and can even become undrivable.",
+category = Category3)
+
+session.add(Part4)
+session.commit()
+
+#Part 5
+Part5 = Parts(name='Automatic transmission', description = "Your automatic transmission frees you from "
+"having to shift gears manually while you're cruising in your ride, so it should always be as easy as that.",
+category = Category3)
+
+session.add(Part5)
+session.commit()
+
+#Part 6
+Part6 = Parts(name='Belt', description = "This belt is designed to provide "
+"better belt-to-pulley contact. The specialized rubber compound incorporates a high temperature polymer "
+"formulated to maximize load carrying requirements and belt life. This Drive Rite belt is made with "
+"specially treated polyester cords to ensure length and tension stability. This belt has been constructed "
+"and engineered to meet the stringent demands of today's automotive drive systems. The Drive Rite v-ribbed "
+"belt delivers long-lasting dependable belt life.",
+category = Category4)
+
+session.add(Part6)
+session.commit()
+
+#Part 7
+Part7 = Parts(name='Pulley', description = "Pulleys are made from either thermoplastic or steel, "
+"depending upon the OEM application demands. The pulleys are grooved, flat, or flat with flanges to meet OEM"
+" standards. A dust cover is used to eliminate the possibility of dirt and other contaminates from harming "
+"the bearing.",
+category = Category4)
+
+session.add(Part7)
+session.commit()
+
+#Part 8
+Part8 = Parts(name='Pulley', description = "Guaranteed to deliver quick starts, good fuel "
+"economy and smooth acceleration. The copper core increases the rate of heat conduction in the spark "
+"plug tip and improves resistance to all types of fouling.",
+category = Category5)
+
+session.add(Part8)
+session.commit()
+
+
+ 
 
 print "added parts to parts.db"
