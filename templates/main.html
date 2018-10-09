@@ -32,9 +32,9 @@
                     
                         <div class="categories">
                             <h3>Categories:</h3>
-                            {% for i in parts %}
+                            {% for i in categories %}
                                 <a href="{{url_for("getCategory", category_id = i.id )}}">
-                                    <p>{{i.category}}</p>
+                                    <p>{{i.name}}</p>
 
                                 </a>
                             {% endfor %}
@@ -42,7 +42,9 @@
                         <div class="recentItems">
                             <h3>Latest items:</h3>
                             {% for i in latestParts %}
-                                <p>{{i.name}}</p>
+                                <a href="{{url_for("getPart", category_id = i.category_id, part_id = i.id)}}">
+                                    <p>{{i.name}}</p>
+                                </a>
                             {% endfor %}
                         </div>
                     </div>

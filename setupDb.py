@@ -6,6 +6,12 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
  
 Base = declarative_base()
+ 
+class Categories(Base):
+    __tablename__ = 'categories'
+
+    name = Column(String(80), nullable = False)
+    id = Column(Integer, primary_key = True)
 
 class Parts(Base): 
     __tablename__ = 'parts' 
@@ -13,7 +19,9 @@ class Parts(Base):
     name = Column(String(80), nullable = False)
     id = Column(Integer, primary_key = True)
     description = Column(String(1000))
-    category = Column(String(80))
+    category_id = Column(Integer,ForeignKey('categories.id'))
+    category = relationship(Categories)
+
 
 
 

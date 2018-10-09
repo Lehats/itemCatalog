@@ -2,7 +2,7 @@
 from flask import Flask, render_template
 from sqlalchemy import create_engine, asc, exists, desc
 from sqlalchemy.orm import sessionmaker
-from setupDb import Base, Parts
+from setupDb import Base, Parts, Categories
 
 
 app = Flask(__name__)
@@ -28,10 +28,10 @@ session = DBsession()
 # Main page --  shows all categories and recently added items
 @app.route('/')
 def getMainPage():
-    latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(2)
-    parts = session.query(Parts).group_by(Parts.category)
+    latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(10)
+    categories = session.query(Categories).group_by(Categories.name)
     session.close()
-    return render_template('main.html', parts = parts, latestParts = latestParts)
+    return render_template('main.html', categories = categories, latestParts = latestParts)
 
 # new part page --shows form to set up a new part
 @app.route('/newpart')
