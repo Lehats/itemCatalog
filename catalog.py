@@ -30,8 +30,7 @@ session = DBsession()
 def getMainPage():
     latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(2)
     parts = session.query(Parts).group_by(Parts.category)
-    #print latestParts
-    #print parts
+    session.close()
     return render_template('main.html', parts = parts, latestParts = latestParts)
 
 # new part page --shows form to set up a new part
