@@ -1,13 +1,38 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template
+from sqlalchemy import create_engine, asc, exists, desc
+from sqlalchemy.orm import sessionmaker
+from setupDb import Base, Parts
 
 
 app = Flask(__name__)
 
+#### DATABASE connection ######****************
+# Connect to db and create db engine
+engine = create_engine('sqlite:///parts.db')
+# Bind the engine to the metadata of the Base class so that the
+# declaratives can be accessed through a DBSession instance
+Base.metadata.bind = engine
+DBsession = sessionmaker(bind=engine)
+# A DBSession() instance establishes all conversations with the database
+# and represents a "staging zone" for all the objects loaded into the
+# database session object. Any change made against the objects in the
+# session won't be persisted into the database until you call
+# session.commit(). If you're not happy about the changes, you can
+# revert all of them back to the last commit by calling
+# session.rollback()
+session = DBsession()
+
+
+
 # Main page --  shows all categories and recently added items
 @app.route('/')
 def getMainPage():
-    return render_template('main.html')
+    latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(2)
+    parts = session.query(Parts).group_by(Parts.category)
+    #print latestParts
+    #print parts
+    return render_template('main.html', parts = parts, latestParts = latestParts)
 
 # new part page --shows form to set up a new part
 @app.route('/newpart')
