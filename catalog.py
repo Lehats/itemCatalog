@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine, asc, exists, desc
 from sqlalchemy.orm import sessionmaker
-from setupDb import Base, Parts, Categories
+from setupDb import Base, Parts, Categories, Users
 
 
 app = Flask(__name__)
@@ -23,7 +23,30 @@ DBsession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBsession()
 
+#########************ Authentification pages *****************#####################
 
+# Login Page with from for log in and sign up
+@app.route('/login')
+def loginSignUp():
+    return render_template('login.html')
+
+# create new user
+@app.route('/newUser', methods=['POST','GET'])
+def createUser():
+    if ( request.method == 'POST'):
+        username = request.form['username']
+        password = request.form['password']
+        user = session.query(Users).filter_by(username = username).first()
+        if user:
+            return redirect(url_for('login')) 
+        else:
+            addUser = Users(username = username)
+            session.add(addUser)
+            session.commit()
+            session.close()   
+    return redirect(url_for('getMainPage'))
+
+#########**************** Resource pages ***********************#########
 
 # Main page --  shows all categories and recently added items
 @app.route('/')
