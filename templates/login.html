@@ -31,17 +31,17 @@
                         <div class="categories">
                             <h3>Log in:</h3>
                             <p>Username:</p>
-                            <form>
-                                <input type="text" placeholder="username">
-                            </form>
-                            <p>Password:</p>
-                            <form>
-                                <input type="text" placeholder="Password">
+                            <form method="POST" action="{{url_for('logIn')}}">
+                                <p>Username:</p>
+                                    <input name="username" type="text" placeholder="username"><br>
+                                        
+                                <p>Password:</p>
+                                    <input name="password" type="text" placeholder="Password"><br>
+                                    <input type="submit" value="Submit">
                             </form>                                     
                         </div>    
                         <div class="recentItems">
                             <h3>Sign up:</h3>
-                            
                             <form method="POST" action="{{url_for('createUser')}}">
                                 <p>Username:</p>
                                     <input name="username" type="text" placeholder="username"><br>

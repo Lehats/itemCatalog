@@ -22,6 +22,18 @@
     display: inline-flex;
     min-height: 200px;
 }
+.test {
+    /*float: right;*/
+    
+    /*background-color: red;*/
+}
+.test p{
+    float: right;
+}
+.test a{
+    float: right;
+    margin-left: 5%;
+}
 .recentItems {
     margin-left: 3%;
 }
@@ -37,6 +49,7 @@
 
 .header-left {
     display: inline-flex;
+    /*background-color: blueviolet;*/
     
 }
 .header-left p {
