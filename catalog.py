@@ -118,7 +118,8 @@ def getCategory(category_id):
 # part page --shows all info of the specific part
 @app.route('/<int:category_id>/<int:part_id>')
 def getPart(category_id, part_id):
-    return render_template('part.html')
+    requestedPart = session.query(Parts).filter_by(id=part_id).first()
+    return render_template('part.html', part = requestedPart)
 
 # part edit page --shows form to edit a part
 @app.route('/<int:category_id>/<int:part_id>/edit')
