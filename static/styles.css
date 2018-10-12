@@ -35,7 +35,13 @@
     margin-left: 5%;
 }
 .recentItems {
-    margin-left: 3%;
+    margin-left: 10%;
+}
+.showUsers {
+    margin-left: 10%;
+}
+.requestedCategory {
+    margin-left: 10%;
 }
 .divider.blue {
     background-color: #42C3C9;

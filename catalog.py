@@ -110,7 +110,10 @@ def createNewPart():
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
 def getCategory(category_id):
-    return render_template('category.html')
+    categories = session.query(Categories).group_by(Categories.name)
+    requestedCategory = session.query(Categories).filter_by(id=category_id).first()
+    partsOfrequestedCategory = session.query(Parts).filter_by(category_id = requestedCategory.id)
+    return render_template('category.html', categories = categories, category = requestedCategory, parts=partsOfrequestedCategory)
 
 # part page --shows all info of the specific part
 @app.route('/<int:category_id>/<int:part_id>')
