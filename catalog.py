@@ -33,6 +33,7 @@ def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
+    session.close()
     #return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
@@ -40,6 +41,7 @@ def showLogin():
 @app.route('/existingUser', methods = ['GET', 'POST'])
 def logIn():
     if request.args.get('state') != login_session.get('state'):
+        session.close()
         return "invalid state parameter"
     if request.method == 'POST':
         username = request.form['username']
@@ -51,7 +53,7 @@ def logIn():
             return redirect(url_for('getMainPage'))
         else:
             session.close()
-            return render_template('login.html')
+            return redirect(url_for('showLogin'))
 
     return render_template('login.html')
 
@@ -59,6 +61,7 @@ def logIn():
 @app.route('/newUser', methods=['POST','GET'])
 def createUser():
     if request.args.get('state') != login_session.get('state'):
+        session.close()
         return "invalid state parameter"
     if ( request.method == 'POST'):
         username = request.form['username']
@@ -66,7 +69,6 @@ def createUser():
         user = session.query(Users).filter_by(username = username).first()
         session.close()
         if user: 
-            #session.close()
             return redirect(url_for('showLogin')) 
         else:
             addUser = Users(username = username)
@@ -81,6 +83,7 @@ def createUser():
 @app.route('/logout')
 def logOut():
     del login_session['username']  
+    session.close()
     return redirect(url_for('getMainPage'))
 
 

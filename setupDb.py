@@ -36,6 +36,8 @@ class Parts(Base):
     description = Column(String(1000))
     category_id = Column(Integer,ForeignKey('categories.id'))
     category = relationship(Categories)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(Users)
 
 
 
