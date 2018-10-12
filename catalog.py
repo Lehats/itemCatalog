@@ -92,14 +92,14 @@ def logOut():
 # Main page --  shows all categories and recently added items
 @app.route('/')
 def getMainPage():
+    session.close()
     latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(10)
     categories = session.query(Categories).group_by(Categories.name)
     users = session.query(Users).all()
     if 'username' in login_session:
         username = login_session['username']
         session.close()
-        return render_template('mainPrivate.html', categories = categories, latestParts = latestParts, user = username )    
-    session.close() 
+        return render_template('mainPrivate.html', categories = categories, latestParts = latestParts, user = username )
     return render_template('main.html', categories = categories, latestParts = latestParts, users = users)
 
 # new part page --shows form to set up a new part
@@ -110,6 +110,7 @@ def createNewPart():
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
 def getCategory(category_id):
+    session.close()
     categories = session.query(Categories).group_by(Categories.name)
     requestedCategory = session.query(Categories).filter_by(id=category_id).first()
     partsOfrequestedCategory = session.query(Parts).filter_by(category_id = requestedCategory.id)
@@ -118,13 +119,28 @@ def getCategory(category_id):
 # part page --shows all info of the specific part
 @app.route('/<int:category_id>/<int:part_id>')
 def getPart(category_id, part_id):
-    requestedPart = session.query(Parts).filter_by(id=part_id).first()
+    session.close()
+    requestedPart = session.query(Parts).filter_by(id=part_id).first()    
     return render_template('part.html', part = requestedPart)
 
 # part edit page --shows form to edit a part
-@app.route('/<int:category_id>/<int:part_id>/edit')
+@app.route('/<int:category_id>/<int:part_id>/edit', methods=['GET', 'POST'] )
 def editPart(category_id, part_id):
-    return render_template('editPart.html')
+    session.close()
+    partToedit = session.query(Parts).filter_by(id=part_id).first()
+    if (request.method == "POST"):
+        partName = request.form['partName']
+        partDescription = request.form['partDescription']
+        partCategory = request.form['partCategory']
+        partToedit.name = partName
+        partToedit.description = partDescription
+        categoryOfPart = session.query(Categories).filter_by(name=partCategory).first()
+        partToedit.category_id = categoryOfPart.id
+        #partToedit.category = categoryOfPart
+        session.commit()
+        return redirect(url_for('getPart',category_id = category_id, part_id = part_id ))
+    categories = session.query(Categories).group_by(Categories.name)
+    return render_template('editPart.html', categories = categories, part = partToedit)
 
 # part delete page --shows form to delete a part
 @app.route('/<int:category_id>/<int:part_id>/delete')
