@@ -31,7 +31,7 @@
                         <div class="categories">
                             <h3>Log in:</h3>
                             <p>Username:</p>
-                            <form method="POST" action="{{url_for('logIn')}}">
+                            <form method="POST" action="/existingUser?state={{STATE}}">
                                 <p>Username:</p>
                                     <input name="username" type="text" placeholder="username"><br>
                                         
@@ -42,7 +42,7 @@
                         </div>    
                         <div class="recentItems">
                             <h3>Sign up:</h3>
-                            <form method="POST" action="{{url_for('createUser')}}">
+                            <form method="POST" action="/newUser?state={{STATE}}">
                                 <p>Username:</p>
                                     <input name="username" type="text" placeholder="username"><br>
                                     

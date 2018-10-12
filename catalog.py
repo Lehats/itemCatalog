@@ -39,6 +39,8 @@ def showLogin():
 # Login Page with from for log in and sign up
 @app.route('/existingUser', methods = ['GET', 'POST'])
 def logIn():
+    if request.args.get('state') != login_session.get('state'):
+        return "invalid state parameter"
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -56,6 +58,8 @@ def logIn():
 # create new user
 @app.route('/newUser', methods=['POST','GET'])
 def createUser():
+    if request.args.get('state') != login_session.get('state'):
+        return "invalid state parameter"
     if ( request.method == 'POST'):
         username = request.form['username']
         password = request.form['password']
