@@ -91,11 +91,13 @@ def logOut():
 def getMainPage():
     latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(10)
     categories = session.query(Categories).group_by(Categories.name)
-    session.close()
+    users = session.query(Users).all()
     if 'username' in login_session:
         username = login_session['username']
+        session.close()
         return render_template('mainPrivate.html', categories = categories, latestParts = latestParts, user = username )    
-    return render_template('main.html', categories = categories, latestParts = latestParts)
+    session.close() 
+    return render_template('main.html', categories = categories, latestParts = latestParts, users = users)
 
 # new part page --shows form to set up a new part
 @app.route('/newpart')
