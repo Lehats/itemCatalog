@@ -70,13 +70,13 @@ session.add(User2)
 session.commit()
 
 # Category 1
-Category1 = Categories(name='Batteries, Starting and Charching')
+Category1 = Categories(name='Batteries,Starting,Charching')
 
 session.add(Category1)
 session.commit()
 
 # Category 2
-Category2 = Categories(name='Brakes and traction control')
+Category2 = Categories(name='Brakes')
 
 session.add(Category2)
 session.commit()
@@ -88,7 +88,7 @@ session.add(Category3)
 session.commit()
 
 # Category 4
-Category4 = Categories(name='Belt drive')
+Category4 = Categories(name='Belt-drive')
 
 session.add(Category4)
 session.commit()
