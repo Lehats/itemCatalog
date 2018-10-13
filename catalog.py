@@ -103,9 +103,22 @@ def getMainPage():
     return render_template('main.html', categories = categories, latestParts = latestParts, users = users)
 
 # new part page --shows form to set up a new part
-@app.route('/newpart')
+@app.route('/newpart', methods=['GET', 'POST'])
 def createNewPart():
-    return render_template('newPart.html')
+    session.close()
+    categories = session.query(Categories).group_by(Categories.name)
+    if request.method == 'POST':
+        partName = request.form['partName']
+        partDescription = request.form['partDescription']
+        partCategoryName = request.form['partCategory']
+        print partCategoryName
+        partCategory = session.query(Categories).filter_by(name=partCategoryName).first()
+        partCreator = session.query(Users).first()
+        partToAdd = Parts(name=partName, description = partDescription, category_id = partCategory.id, user_id = partCreator.id)
+        session.add(partToAdd)
+        session.commit()
+        return redirect(url_for('getMainPage'))
+    return render_template('newPart.html', categories = categories)
 
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
