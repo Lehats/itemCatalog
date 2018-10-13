@@ -143,9 +143,15 @@ def editPart(category_id, part_id):
     return render_template('editPart.html', categories = categories, part = partToedit)
 
 # part delete page --shows form to delete a part
-@app.route('/<int:category_id>/<int:part_id>/delete')
+@app.route('/<int:category_id>/<int:part_id>/delete', methods=['GET','POST'] )
 def deletePart(category_id,part_id):
-    return render_template('deletePart.html')
+    session.close()
+    partToDelete = session.query(Parts).filter_by(id=part_id).first()
+    if request.method == 'POST':
+        session.delete(partToDelete)
+        session.commit()
+        return redirect(url_for('getCategory', category_id = category_id))
+    return render_template('deletePart.html', part = partToDelete)
 
 
 if (__name__ == '__main__'):

@@ -171,7 +171,7 @@ session.add(Part7)
 session.commit()
 
 #Part 8
-Part8 = Parts(name='Pulley', description = "Guaranteed to deliver quick starts, good fuel "
+Part8 = Parts(name='Spark plug', description = "Guaranteed to deliver quick starts, good fuel "
 "economy and smooth acceleration. The copper core increases the rate of heat conduction in the spark "
 "plug tip and improves resistance to all types of fouling.",
 category = Category5, user = User2)
