@@ -35,28 +35,31 @@
                                 {% for i in categories %}
                                     <a href="{{url_for("getCategory", category_id = i.id )}}">
                                         <p>{{i.name}}</p>
-
                                     </a>
                                 {% endfor %}
-                            
                             </div>
                         {% endif %}
                         {% if latestParts !=[] %}
                             <div class="recentItems">
                                 <h3>Latest parts:</h3>
                                 {% for i in latestParts %}
-                                    <a href="{{url_for("getPart", category_id = i.category_id, part_id = i.id)}}">
+                                    <a href="{{url_for('getPart', category_id = i.category_id, part_id = i.id)}}">
                                         <p>{{i.name}}</p>
                                     </a>
                                 {% endfor %}
                             </div>
                         {% endif %}
+                        <div class="createNewPartButton">
+                            <h3>
+                            </h3>
+                            <form action="{{url_for('createNewPart', user_id = user.id)}}" method="get">
+                                <button type="submit">Create new part</button>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-1"></div>
                 </div>
             </div>
-
-        </div>
-        
+        </div>  
     </body>
 </html>

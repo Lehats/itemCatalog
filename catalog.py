@@ -111,7 +111,6 @@ def createNewPart():
         partName = request.form['partName']
         partDescription = request.form['partDescription']
         partCategoryName = request.form['partCategory']
-        print partCategoryName
         partCategory = session.query(Categories).filter_by(name=partCategoryName).first()
         partCreator = session.query(Users).first()
         partToAdd = Parts(name=partName, description = partDescription, category_id = partCategory.id, user_id = partCreator.id)
@@ -149,7 +148,6 @@ def editPart(category_id, part_id):
         partToedit.description = partDescription
         categoryOfPart = session.query(Categories).filter_by(name=partCategory).first()
         partToedit.category_id = categoryOfPart.id
-        #partToedit.category = categoryOfPart
         session.commit()
         return redirect(url_for('getPart',category_id = category_id, part_id = part_id ))
     categories = session.query(Categories).group_by(Categories.name)
