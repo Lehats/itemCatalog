@@ -6,6 +6,8 @@ from setupDb import Base, Parts, Categories, Users
 from flask import session as login_session
 import random, string
 
+from flask_httpauth import HTTPBasicAuth
+auth = HTTPBasicAuth()
 
 app = Flask(__name__)
 
@@ -24,6 +26,7 @@ DBsession = sessionmaker(bind=engine)
 # revert all of them back to the last commit by calling
 # session.rollback()
 session = DBsession()
+    
 
 #########************ Authentification pages *****************#####################
 
@@ -76,14 +79,14 @@ def createUser():
             session.add(addUser)
             session.commit()
             session.close()
-            login_session['username'] = username   
+            login_session['username'] = username 
     return redirect(url_for('getMainPage'))
 
 # log out
 @app.route('/logout')
 def logOut():
     session.close()
-    del login_session['username']  
+    del login_session['username']
     return redirect(url_for('getMainPage'))
 
 
@@ -104,8 +107,10 @@ def getMainPage():
 # new part page --shows form to set up a new part
 @app.route('/newpart', methods=['GET', 'POST'])
 def createNewPart():
+    print "createNewPart()"
     session.close()
     categories = session.query(Categories).group_by(Categories.name)
+    user = login_session['username']
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
     if request.method == 'POST':
@@ -118,7 +123,7 @@ def createNewPart():
         session.add(partToAdd)
         session.commit()
         return redirect(url_for('getMainPage'))
-    return render_template('newPart.html', categories = categories, user = login_session['username'] )
+    return render_template('newPart.html', categories = categories, user = user )
 
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
