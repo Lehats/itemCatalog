@@ -1,0 +1,54 @@
+<html>
+    <head>
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+    <body>
+        <div class="container">
+            <div class="row top-menu">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-5 header-left">   
+                    <a href="{{url_for('getMainPage')}}">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    </a>
+                    <p>Item catalog</p>   
+                </div>
+                <div class="col-lg-5 header-right">
+                    <a href="{{url_for('logOut')}}">Log out</a>
+                    <p>You're currently logged in as {{user}}</p>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
+            <div class="row divider blue">
+                <div class="col-lg-12"></div>
+            </div>
+            <div class="row content">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10 main-content">
+                    {% if categories !=[] %}
+                    <div class="categories">
+                        <h3>Categories:</h3>
+                        {% for i in categories %}
+                        <a href="{{url_for('getCategory', category_id = i.id )}}">
+                            <p>{{i.name}}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %} 
+                    {% if category !=[] %}
+                    <div class="requestedCategory">    
+                        <h3>{{category.name}}</h3>
+                        {% for i in parts %}
+                        <a href="{{url_for('getPart', category_id = i.category_id, part_id = i.id)}}">
+                            <p>{{i.name}}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %} 
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
+        </div>
+    </body>
+</html>
