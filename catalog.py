@@ -43,8 +43,8 @@ def showLogin():
 # Login Page with from for log in and sign up
 @app.route('/existingUser', methods = ['GET', 'POST'])
 def logIn():
+    session.close()
     if request.args.get('state') != login_session.get('state'):
-        session.close()
         return "invalid state parameter"
     if request.method == 'POST':
         username = request.form['username']
@@ -107,7 +107,6 @@ def getMainPage():
 # new part page --shows form to set up a new part
 @app.route('/newpart', methods=['GET', 'POST'])
 def createNewPart():
-    print "createNewPart()"
     session.close()
     categories = session.query(Categories).group_by(Categories.name)
     user = login_session['username']
