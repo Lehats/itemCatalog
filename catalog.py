@@ -97,9 +97,9 @@ def getMainPage():
     categories = session.query(Categories).group_by(Categories.name)
     users = session.query(Users).all()
     if 'username' in login_session:
-        username = login_session['username']
+        user = login_session['username']
         session.close()
-        return render_template('mainPrivate.html', categories = categories, latestParts = latestParts, user = username )
+        return render_template('mainPrivate.html', categories = categories, latestParts = latestParts, user = user )
     return render_template('main.html', categories = categories, latestParts = latestParts, users = users)
 
 # new part page --shows form to set up a new part
@@ -107,6 +107,10 @@ def getMainPage():
 def createNewPart():
     session.close()
     categories = session.query(Categories).group_by(Categories.name)
+    if 'username' in login_session:
+        user = login_session['username']
+    else:
+        return redirect(url_for('showLogin'))
     if request.method == 'POST':
         partName = request.form['partName']
         partDescription = request.form['partDescription']
@@ -117,7 +121,7 @@ def createNewPart():
         session.add(partToAdd)
         session.commit()
         return redirect(url_for('getMainPage'))
-    return render_template('newPart.html', categories = categories)
+    return render_template('newPart.html', categories = categories, user = user)
 
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
