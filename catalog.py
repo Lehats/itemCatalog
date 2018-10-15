@@ -62,7 +62,7 @@ def logIn():
 
     return render_template('login.html')
 
-@app.route('/googleConnect', methods = ['GET','POST'])
+@app.route('/googleConnect', methods = ['POST'])
 def googelConnect():
     session.close()
     # checks for state parameter
@@ -70,13 +70,12 @@ def googelConnect():
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    tester = request.data
-    token = tester
-    print token
+    # get the token from the onSignIn of the html file
+    token = request.data
+
     try:
         # Specify the CLIENT_ID of the app that accesses the backend:
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), "117697598600-cqmrdclt6di094ff3s6j5moj0sq38d4h.apps.googleusercontent.com")
-
         # Or, if multiple clients access the backend server:
         # idinfo = id_token.verify_oauth2_token(token, requests.Request())
         # if idinfo['aud'] not in [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]:
@@ -96,9 +95,7 @@ def googelConnect():
         pass
     url = ('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=%s' % token)
     h = httplib2.Http()
-    result = h.request(url,'GET')[1]
-    print result
-    return result
+    result = json.loads(h.request(url,'GET')[1])
     # result includes the following.
     '''
     {
@@ -121,14 +118,31 @@ def googelConnect():
     "locale": "en"
     }
     '''
-    print result[0]
+    # check if user exists
+    username = result['name']
+    username = username.replace(" ","")
+    user = session.query(Users).filter_by(username=username).first()
+    # if not..
+    if not user:
+        userToAdd = Users(username=username)
+        userToAdd.hashThePassword(result['name'])
+        session.add(userToAdd)
+        session.commit()
+        login_session['username'] = username
+        print "neuuser"
+        session.close()
+        return "bla" 
+    # if so..
+    else:
+        login_session['username'] = username
+        print "existuser"
+        session.close()
+        return "bla"  
     
-    
-
-
 # create new user
 @app.route('/newUser', methods=['POST','GET'])
 def createUser():
+    session.close()
     if request.args.get('state') != login_session.get('state'):
         session.close()
         return "invalid state parameter"
