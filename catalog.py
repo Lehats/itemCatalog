@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response
 from sqlalchemy import create_engine, asc, exists, desc
 from sqlalchemy.orm import sessionmaker
 from setupDb import Base, Parts, Categories, Users
 from flask import session as login_session
-import random, string
+import random, string, json, requests, httplib2
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
@@ -33,10 +35,10 @@ session = DBsession()
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
+    session.close()
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    session.close()
     #return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
@@ -59,6 +61,70 @@ def logIn():
             return redirect(url_for('showLogin'))
 
     return render_template('login.html')
+
+@app.route('/googleConnect', methods = ['GET','POST'])
+def googelConnect():
+    session.close()
+    # checks for state parameter
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid state parameter.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    tester = request.data
+    token = tester
+    print token
+    try:
+        # Specify the CLIENT_ID of the app that accesses the backend:
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), "117697598600-cqmrdclt6di094ff3s6j5moj0sq38d4h.apps.googleusercontent.com")
+
+        # Or, if multiple clients access the backend server:
+        # idinfo = id_token.verify_oauth2_token(token, requests.Request())
+        # if idinfo['aud'] not in [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]:
+        #     raise ValueError('Could not verify audience.')
+
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise ValueError('Wrong issuer.')
+
+        # If auth request is from a G Suite domain:
+        # if idinfo['hd'] != GSUITE_DOMAIN_NAME:
+        #     raise ValueError('Wrong hosted domain.')
+
+        # ID token is valid. Get the user's Google Account ID from the decoded token.
+        userid = idinfo['sub']
+    except ValueError:
+        # Invalid token
+        pass
+    url = ('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=%s' % token)
+    h = httplib2.Http()
+    result = h.request(url,'GET')[1]
+    print result
+    return result
+    # result includes the following.
+    '''
+    {
+    // These six fields are included in all Google ID Tokens.
+    "iss": "https://accounts.google.com",
+    "sub": "110169484474386276334",
+    "azp": "1008719970978-hb24n2dstb40o45d4feuo2ukqmcc6381.apps.googleusercontent.com",
+    "aud": "1008719970978-hb24n2dstb40o45d4feuo2ukqmcc6381.apps.googleusercontent.com",
+    "iat": "1433978353",
+    "exp": "1433981953",
+
+    // These seven fields are only included when the user has granted the "profile" and
+    // "email" OAuth scopes to the application.
+    "email": "testuser@gmail.com",
+    "email_verified": "true",
+    "name" : "Test User",
+    "picture": "https://lh4.googleusercontent.com/-kYgzyAWpZzJ/ABCDEFGHI/AAAJKLMNOP/tIXL9Ir44LE/s99-c/photo.jpg",
+    "given_name": "Test",
+    "family_name": "User",
+    "locale": "en"
+    }
+    '''
+    print result[0]
+    
+    
+
 
 # create new user
 @app.route('/newUser', methods=['POST','GET'])
