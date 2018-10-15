@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, make_response, jsonify
 from sqlalchemy import create_engine, asc, exists, desc
 from sqlalchemy.orm import sessionmaker
 from setupDb import Base, Parts, Categories, Users
@@ -264,6 +264,11 @@ def deletePart(category_id,part_id):
         return redirect(url_for('getCategory', category_id = category_id))
     return render_template('deletePart.html', part = partToDelete, user = login_session['username'])
 
+# json data
+@app.route('/JSON')
+def getJSON():
+    parts = session.query(Parts).all()
+    return jsonify(Parts=[r.serialize for r in parts])
 
 if (__name__ == '__main__'):
     app.secret_key = 'super_secret_key'

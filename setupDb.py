@@ -21,12 +21,28 @@ class Users(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'username'         : self.name,
+           'id'           : self.id,
+       }
+
 
 class Categories(Base):
     __tablename__ = 'categories'
 
     name = Column(String(80), nullable = False)
     id = Column(Integer, primary_key = True)
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'name'         : self.name,
+           'id'           : self.id,
+       }
 
 class Parts(Base): 
     __tablename__ = 'parts' 
@@ -38,6 +54,17 @@ class Parts(Base):
     category = relationship(Categories)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship(Users)
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
+           'name'         : self.name,
+           'id'           : self.id,
+           'description'         : self.description,
+           'category'       :self.category.name,
+           'creator'        :self.user.username
+       }
 
 
 
