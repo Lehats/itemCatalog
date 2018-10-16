@@ -7,7 +7,6 @@ from flask import session as login_session
 import random, string, json, requests, httplib2
 from google.oauth2 import id_token
 from google.auth.transport import requests
-
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
@@ -32,17 +31,16 @@ session = DBsession()
 
 #########************ Authentification pages *****************#####################
 
-# Create anti-forgery state token
+# Create anti-forgery key and display login page
 @app.route('/login')
 def showLogin():
     session.close()
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    #return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
-# Login Page with from for log in and sign up
+# handle log in from existing user
 @app.route('/existingUser', methods = ['GET', 'POST'])
 def logIn():
     session.close()
@@ -62,6 +60,7 @@ def logIn():
 
     return render_template('login.html')
 
+# end point for users that log in with a google account
 @app.route('/googleConnect', methods = ['POST'])
 def googelConnect():
     session.close()
@@ -263,7 +262,7 @@ def deletePart(category_id,part_id):
         return redirect(url_for('getCategory', category_id = category_id))
     return render_template('deletePart.html', part = partToDelete, user = login_session['username'])
 
-# json data
+# json data. Displays all parts from db as jsonified content
 @app.route('/JSON')
 def getJSON():
     parts = session.query(Parts).all()
