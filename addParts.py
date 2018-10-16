@@ -120,7 +120,7 @@ Part2 = Parts(
     "utilize a 12-volt, high-amperage electrical source (a battery) "
     "to turn your engine over and start it. The starter, obviously,"
     "plays a significant role in starting your vehicle, so it's "
-    imperative that it remains in tip-top condition. ",
+    "imperative that it remains in tip-top condition. ",
     category=Category1, user=User1)
 
 session.add(Part2)

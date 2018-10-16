@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request,
+from flask import Flask, render_template, request
 from flask import redirect, url_for, make_response, jsonify
 from sqlalchemy import create_engine, asc, exists, desc
 from sqlalchemy.orm import sessionmaker
@@ -91,8 +91,8 @@ def googelConnect():
         # if idinfo['aud'] not in [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]:
         #     raise ValueError('Could not verify audience.')
 
-        if idinfo['iss'] not in
-        ['accounts.google.com', 'https://accounts.google.com']:
+        if idinfo['iss'] not in [
+            'accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Wrong issuer.')
 
         # If auth request is from a G Suite domain:
@@ -221,8 +221,8 @@ def createNewPart():
         partDescription = request.form['partDescription']
         partCategoryName = request.form['partCategory']
 
-        partCategory = session.query(Categories).
-        filter_by(name=partCategoryName).first()
+        partCategory = session.query(Categories).filter_by(
+            name=partCategoryName).first()
 
         partCreator = session.query(Users).filter_by(username=user).first()
         partToAdd = Parts(
@@ -242,11 +242,11 @@ def getCategory(category_id):
     session.close()
     categories = session.query(Categories).group_by(Categories.name)
 
-    requestedCategory = session.query(Categories).
-    filter_by(id=category_id).first()
+    requestedCategory = session.query(Categories).filter_by(
+        id=category_id).first()
 
-    partsOfrequestedCategory = session.query(Parts).
-    filter_by(category_id=requestedCategory.id)
+    partsOfrequestedCategory = session.query(Parts).filter_by(
+        category_id=requestedCategory.id)
 
     if 'username' not in login_session:
         return render_template(
@@ -293,8 +293,8 @@ def editPart(category_id, part_id):
         partToedit.name = partName
         partToedit.description = partDescription
 
-        categoryOfPart = session.query(Categories).
-        filter_by(name=partCategory).first()
+        categoryOfPart = session.query(Categories).filter_by(
+            name=partCategory).first()
 
         partToedit.category_id = categoryOfPart.id
         session.commit()
