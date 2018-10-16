@@ -1,4 +1,4 @@
-This is a project for demonstrating several server task.
+This is a project for demonstrating several server tasks.
 1. Managing diffrent request types.
 2. Handling CRUD commands using sql databases.
 3. Implement authentification and user registration. 
@@ -23,10 +23,10 @@ To install Vagrant use the link above.
 
 Get the necessary files and set up vagrant:
 
-https://github.com/udacity/fullstack-nanodegree-vm
+https://github.com/Lehats/itemCatalog
 
-Fork and clone the repo above. Once you done that navigate to the repo where you see a directory called vagrant. 
-Change to this directory and run the command: vagrant up. If it is the first time, this will cause the installation 
+Fork and clone the repo above. Once you done that navigate to the repo directory and run the command: vagrant up. 
+If it is the first time, this will cause the installation 
 of linux and may take a while. Once this is done, you can always start your VM using the command vagrant up. 
 Eitherway to log on to your vm us the commant: vagrant ssh. After your log in was sucessfully, you have access to 
 all the files in your local directory from where you setted up vagrant. 
