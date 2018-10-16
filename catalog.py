@@ -178,9 +178,8 @@ def getMainPage():
     session.close()
     latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(10)
     categories = session.query(Categories).group_by(Categories.name)
-    users = session.query(Users).all()
     if 'username' not in login_session:
-        return render_template('main.html', categories = categories, latestParts = latestParts, users = users)
+        return render_template('main.html', categories = categories, latestParts = latestParts)
     return render_template('mainPrivate.html', categories = categories, latestParts = latestParts, user = login_session['username'] )
     
 
