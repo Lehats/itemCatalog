@@ -68,23 +68,24 @@
                                     data: id_token,
                                     contentType: 'application/octet-stream; charset=utf-8',
                                     success: function() {
+                                        // directly log out from google server to avoid auto log in 
+                                        // if no user is logged in and you navigate to th end point /login
+                                        var auth2 = gapi.auth2.getAuthInstance();
+                                        auth2.signOut();
+                                        // redirect to main end point /
                                         window.location.href = "/";
-                                    }
+                                        
+
+                                    }  
                                 });
                                 
-                                
                             }
+                                
+                                
+                            
                         </script>
                         
-                        <a href="#" onclick="signOut();">Sign out</a>
-                        <script>
-                            function signOut() {
-                                var auth2 = gapi.auth2.getAuthInstance();
-                                auth2.signOut().then(function () {
-                                    console.log('User signed out.');
-                                });
-                            }
-                        </script>
+                        
                         
                         
                         <!--END GOOGLE PLUS SIGN IN -->
