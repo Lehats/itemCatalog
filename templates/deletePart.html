@@ -13,7 +13,7 @@
                     <a href="{{url_for('getMainPage')}}">
                         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                     </a>
-                    <p>Item catalog</p>   
+                    <p>Car parts catalog</p>   
                 </div>
                 <div class="col-lg-5 header-right">
                     <a href="{{url_for('logOut')}}">Log out</a>
@@ -34,7 +34,6 @@
                             <p>Are you sure you want to delete {{part.name}} ?</p>
                             <input type="submit" value="Delete">
                         </form>
-                        <a href="{{url_for('getCategory', category_id = part.category_id )}}">Cancel</a>
                         
                     </div>
                     {% endif %} 

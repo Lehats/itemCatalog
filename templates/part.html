@@ -12,7 +12,7 @@
                     <a href="{{url_for('getMainPage')}}">
                         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                     </a>
-                    <p>Item catalog</p>   
+                    <p>Car parts catalog</p>   
                 </div>
                 <div class="col-lg-5 text-right">
                     <a href="{{url_for('showLogin')}}">Click Here to Log in </a>
@@ -28,9 +28,9 @@
                     {% if part !=[] %}
                     <div class="requestedCategory">    
                         <h3>{{part.name}}</h3>
-                        <p>Description:</p>
+                        <p style="color:gray">Description:</p>
                         <p>{{part.description}}</p>
-                        <p>Category:</p>
+                        <p style="color:gray">Category:</p>
                         <p>{{part.category.name}}</p>
                     </div>
                     {% endif %} 

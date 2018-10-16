@@ -17,12 +17,12 @@
                         <a href="{{url_for('getMainPage')}}">
                             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                         </a>
-                        <p>Item catalog</p>
+                        <p>Car parts catalog</p>
                     
                     
                 </div>
-                <div class="col-lg-5 text-right">
-                    
+                <div class="col-lg-5 header-right">
+                                       
                 </div>
                 <div class="col-lg-1"></div>
             </div>
@@ -32,64 +32,63 @@
                 <div class="row content">
                     <div class="col-lg-1"></div>
                     <div class="col-lg-10 main-content">                    
-                        <div class="categories">
+                        <div class="loginForm">
                             <h3>Log in:</h3>
                             <form method="POST" action="/existingUser?state={{STATE}}">
                                 <p>Username:</p>
                                     <input name="username" type="text" placeholder="username"><br>
                                         
                                 <p>Password:</p>
-                                    <input name="password" type="text" placeholder="Password"><br>
+                                    <input name="password" type="text" placeholder="Password"><br><br>
                                     <input type="submit" value="Submit">
                             </form>                                     
                         </div>    
-                        <div class="recentItems">
+                        <div class="signinForm">
                             <h3>Sign up:</h3>
                             <form method="POST" action="/newUser?state={{STATE}}">
                                 <p>Username:</p>
                                     <input name="username" type="text" placeholder="username"><br>
                                     
                                 <p>Password:</p>
-                                    <input name="password" type="text" placeholder="Password"><br>
+                                    <input name="password" type="text" placeholder="Password"><br><br>
                                     <input type="submit" value="Submit">
                             </form>                                   
                         </div>
-                        <!-- GOOGLE PLUS SIGN IN-->
-                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                        <script>
-                            function onSignIn(googleUser) {
-                                var profile = googleUser.getBasicProfile();
-                                var id_token = googleUser.getAuthResponse().id_token;
-                                
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/googleConnect?state={{STATE}}',
-                                    processData: false,
-                                    data: id_token,
-                                    contentType: 'application/octet-stream; charset=utf-8',
-                                    success: function() {
-                                        // directly log out from google server to avoid auto log in 
-                                        // if no user is logged in and you navigate to th end point /login
-                                        var auth2 = gapi.auth2.getAuthInstance();
-                                        auth2.signOut();
-                                        // redirect to main end point /
-                                        window.location.href = "/";
-                                        
+                        <div class="thirdParty">
+                            <h3>Or sign in with:</h3>
+                            <!-- GOOGLE PLUS SIGN IN-->
+                            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                            <script>
+                                function onSignIn(googleUser) {
+                                    var profile = googleUser.getBasicProfile();
+                                    var id_token = googleUser.getAuthResponse().id_token;
+                                    
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/googleConnect?state={{STATE}}',
+                                        processData: false,
+                                        data: id_token,
+                                        contentType: 'application/octet-stream; charset=utf-8',
+                                        success: function() {
+                                            // directly log out from google server to avoid auto log in 
+                                            // if no user is logged in and you navigate to th end point /login
+                                            var auth2 = gapi.auth2.getAuthInstance();
+                                            auth2.signOut();
+                                            // redirect to main end point /
+                                            window.location.href = "/";
+                                            
 
-                                    }  
-                                });
+                                        }  
+                                    });
+                                    
+                                }
+                                    
+                                    
                                 
-                            }
-                                
-                                
-                            
-                        </script>
-                        
-                        
-                        
-                        
-                        <!--END GOOGLE PLUS SIGN IN -->
+                            </script>
+                            <!--END GOOGLE PLUS SIGN IN -->
                         </div>
+                    </div>
                     <div class="col-lg-1"></div>
                 </div>
             </div>
