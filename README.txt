@@ -63,3 +63,10 @@ ImportError: No module named google.oauth2
 run in your vagrant machine the command: sudo pip install --upgrade google-cloud-storage
 
 and run the failed script again.
+
+Appendix:
+
+The vagrant file is created by udacity.com and can also be found in the following repo:
+
+https://github.com/udacity/fullstack-nanodegree-vm
+
