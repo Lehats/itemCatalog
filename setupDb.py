@@ -53,9 +53,9 @@ class Parts(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String(1000))
     category_id = Column(Integer, ForeignKey('categories.id'))
-    category = relationship(Categories)
+    category = relationship(Categories, cascade="all, delete-orphan")
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(Users)
+    user = relationship(Users, cascade="all, delete-orphan")
 
     @property
     def serialize(self):
