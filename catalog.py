@@ -273,7 +273,8 @@ def createNewPart():
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
 def getCategory(category_id):
-    '''This function is called when a user requests the /category end point.
+    '''This function is called when a user requests the
+    /<int:category_id> end point.
     The funtion returns depending on the log in status, either the
     private or public category page.
     If there is a post request by submitting the form, the function
@@ -305,7 +306,8 @@ def getCategory(category_id):
 # part page --shows all info of the specific part
 @app.route('/<int:category_id>/<int:part_id>')
 def getPart(category_id, part_id):
-    '''This function is called when a user requests the /part end point.
+    '''This function is called when a user requests the 
+    /<int:category_id>/<int:part_id> end point.
     The funtion returns depending on the log in status, either the
     private or public part page.
     '''
@@ -321,7 +323,8 @@ def getPart(category_id, part_id):
 # part edit page --shows form to edit a part
 @app.route('/<int:category_id>/<int:part_id>/edit', methods=['GET', 'POST'])
 def editPart(category_id, part_id):
-    '''This function is called when a user requests the /edit end point.
+    '''This function is called when a user requests the 
+    /<int:category_id>/<int:part_id>/edit end point.
     The funtion returns depending on the log in status, either the
     part page or the edit part page.
     If there is a post request by submitting the form, the function
@@ -362,7 +365,8 @@ def editPart(category_id, part_id):
 # part delete page --shows form to delete a part
 @app.route('/<int:category_id>/<int:part_id>/delete', methods=['GET', 'POST'])
 def deletePart(category_id, part_id):
-    '''This function is called when a user requests the /delete end point.
+    '''This function is called when a user requests the 
+    /<int:category_id>/<int:part_id>/delete end point.
     The funtion returns depending on the log in status, either the
     part page or the delete part page.
     If there is a post request, the function
@@ -391,8 +395,32 @@ def deletePart(category_id, part_id):
 # json data. Displays all parts from db as jsonified content
 @app.route('/JSON')
 def getJSON():
+    '''This function is called when a user requests the /JSON end point.
+    The funtion returns all entries from the Parts table from the database
+    in a jsonyfied format.
+    '''
     parts = session.query(Parts).all()
     return jsonify(Parts=[r.serialize for r in parts])
+
+# json data. Returns the jsonyfied entru of the requested part.
+@app.route('/<int:category_id>/<int:part_id>/JSON')
+def getPartJSON():
+    '''This function is called when a user requests the 
+    /<int:category_id>/<int:part_id>/JSON end point.
+    The funtion returns the entry from the requested part
+    in a jsonyfied format.
+    '''
+    requestedPart = session.query(Parts).filter_by(id=part_id).first()
+    return jsonify(Parts=[r.serialize for r in requestedPart])
+
+# json data. Returns the jsonyfied entru of the requested part.
+@app.route('/<int:category_id>/del')
+def delCat(category_id):
+    session.close()
+    delcat = session.query(Categories).filter_by(id=category_id).first()
+    session.delete(delcat)
+    session.commit()
+    return redirect(url_for('getMainPage'))
 
 if (__name__ == '__main__'):
     app.secret_key = 'super_secret_key'

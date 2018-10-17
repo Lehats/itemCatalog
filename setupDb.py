@@ -8,7 +8,6 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-
 class Users(Base):
     __tablename__ = 'users'
 
@@ -36,6 +35,7 @@ class Categories(Base):
 
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
+    
 
     @property
     def serialize(self):
@@ -53,9 +53,9 @@ class Parts(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String(1000))
     category_id = Column(Integer, ForeignKey('categories.id'))
-    category = relationship(Categories, cascade="all, delete-orphan")
+    category = relationship(Categories)#, cascade="all, delete-orphan")
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(Users, cascade="all, delete-orphan")
+    user = relationship(Users)#, cascade="all, delete-orphan")
 
     @property
     def serialize(self):
@@ -67,6 +67,12 @@ class Parts(Base):
             'category': self.category.name,
             'creator': self.user.username
         }
+
+
+
+
+
+
 
 engine = create_engine('sqlite:///parts.db')
 
