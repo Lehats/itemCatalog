@@ -38,6 +38,9 @@ session = DBsession()
 # Create anti-forgery key and display login page
 @app.route('/login')
 def showLogin():
+    '''This function creates a anti forgery key. This key is valid until log out.
+        When done this it will render the login page.
+    '''
     session.close()
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
@@ -48,6 +51,12 @@ def showLogin():
 # handle log in from existing user
 @app.route('/existingUser', methods=['GET', 'POST'])
 def logIn():
+    '''This function is called when a user submits the login form.
+    Then the funtion checks if the anti forgery key is valid. If so
+    it checks if the user exists and if it's credentials are correct.
+    If so it redirects the logged in user to the main page.
+    Else it return the login page again.
+    '''
     session.close()
     if request.args.get('state') != login_session.get('state'):
         return "invalid state parameter"
@@ -69,6 +78,11 @@ def logIn():
 # end point for users that log in with a google account
 @app.route('/googleConnect', methods=['POST'])
 def googelConnect():
+    '''This function is called when a user sign in with a google account.
+    Then the funtion checks if the anti forgery key is valid. If so
+    it checks if the user already exists or if it needs to create a new user.
+    After that it redirects to the main page.
+    '''
 
     session.close()
     # checks for state parameter
@@ -92,7 +106,8 @@ def googelConnect():
         #     raise ValueError('Could not verify audience.')
 
         if idinfo['iss'] not in [
-            'accounts.google.com', 'https://accounts.google.com']:
+                                'accounts.google.com',
+                                'https://accounts.google.com']:
             raise ValueError('Wrong issuer.')
 
         # If auth request is from a G Suite domain:
@@ -160,6 +175,12 @@ def googelConnect():
 # create new user
 @app.route('/newUser', methods=['POST', 'GET'])
 def createUser():
+    '''This function is called when a user submits the sign up form.
+    Then the funtion checks if the anti forgery key is valid. If so
+    it checks if the user exists. If so it returns the login page again.
+    Else it creates a new user entry in the db and redirect to
+    the main page.
+    '''
     session.close()
     if request.args.get('state') != login_session.get('state'):
         session.close()
@@ -184,6 +205,10 @@ def createUser():
 # log out
 @app.route('/logout')
 def logOut():
+    '''This function is called when a user press the log out link.
+    Then the funtion deletes the username from the current login_session
+    and redirects to the main page.
+    '''
     session.close()
     del login_session['username']
     return redirect(url_for('getMainPage'))
@@ -194,7 +219,12 @@ def logOut():
 # Main page --  shows all categories and recently added items
 @app.route('/')
 def getMainPage():
+    '''This function is called when a user requests the / end point.
+    The funtion returns depending on the log in status, either the
+    private or public main page.
+    '''
     session.close()
+    print showLogin.__doc__
     latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(10)
     categories = session.query(Categories).group_by(Categories.name)
     if 'username' not in login_session:
@@ -211,6 +241,10 @@ def getMainPage():
 # new part page --shows form to set up a new part
 @app.route('/newpart', methods=['GET', 'POST'])
 def createNewPart():
+    '''This function is called when a user requests the /newpart end point.
+    The funtion returns depending on the log in status, either the
+    new part form or redirects to the main page.
+    '''
     session.close()
     categories = session.query(Categories).group_by(Categories.name)
     user = login_session['username']
@@ -239,6 +273,12 @@ def createNewPart():
 # category page --  shows all parts of the specific category
 @app.route('/<int:category_id>')
 def getCategory(category_id):
+    '''This function is called when a user requests the /category end point.
+    The funtion returns depending on the log in status, either the
+    private or public category page.
+    If there is a post request by submitting the form, the function
+    will create a new entry in the parts db.
+    '''
     session.close()
     categories = session.query(Categories).group_by(Categories.name)
 
@@ -265,6 +305,10 @@ def getCategory(category_id):
 # part page --shows all info of the specific part
 @app.route('/<int:category_id>/<int:part_id>')
 def getPart(category_id, part_id):
+    '''This function is called when a user requests the /part end point.
+    The funtion returns depending on the log in status, either the
+    private or public part page.
+    '''
     session.close()
     requestedPart = session.query(Parts).filter_by(id=part_id).first()
     if 'username' in login_session:
@@ -277,6 +321,12 @@ def getPart(category_id, part_id):
 # part edit page --shows form to edit a part
 @app.route('/<int:category_id>/<int:part_id>/edit', methods=['GET', 'POST'])
 def editPart(category_id, part_id):
+    '''This function is called when a user requests the /edit end point.
+    The funtion returns depending on the log in status, either the
+    part page or the edit part page.
+    If there is a post request by submitting the form, the function
+    will update the entry in the parts db.
+    '''
     session.close()
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -312,6 +362,12 @@ def editPart(category_id, part_id):
 # part delete page --shows form to delete a part
 @app.route('/<int:category_id>/<int:part_id>/delete', methods=['GET', 'POST'])
 def deletePart(category_id, part_id):
+    '''This function is called when a user requests the /delete end point.
+    The funtion returns depending on the log in status, either the
+    part page or the delete part page.
+    If there is a post request, the function
+    will delete the entry in the parts db.
+    '''
     session.close()
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
