@@ -405,23 +405,17 @@ def getJSON():
 
 # json data. Returns the jsonyfied entru of the requested part.
 @app.route('/<int:category_id>/<int:part_id>/JSON')
-def getPartJSON():
+def getPartJSON(category_id, part_id):
     '''This function is called when a user requests the 
     /<int:category_id>/<int:part_id>/JSON end point.
     The funtion returns the entry from the requested part
     in a jsonyfied format.
     '''
+    
     requestedPart = session.query(Parts).filter_by(id=part_id).first()
-    return jsonify(Parts=[r.serialize for r in requestedPart])
+    categoryOfRequestedPart = session.query(Categories).filter_by(id=category_id).first()
+    return jsonify(Part=[requestedPart.serialize, categoryOfRequestedPart.serialize])
 
-# json data. Returns the jsonyfied entru of the requested part.
-@app.route('/<int:category_id>/del')
-def delCat(category_id):
-    session.close()
-    delcat = session.query(Categories).filter_by(id=category_id).first()
-    session.delete(delcat)
-    session.commit()
-    return redirect(url_for('getMainPage'))
 
 if (__name__ == '__main__'):
     app.secret_key = 'super_secret_key'

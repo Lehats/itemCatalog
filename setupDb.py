@@ -16,7 +16,6 @@ class Parts(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String(1000))
     category_id = Column(Integer, ForeignKey('categories.id'))
-    
     user_id = Column(Integer, ForeignKey('users.id'))
     
 
@@ -24,11 +23,10 @@ class Parts(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-            'name': self.name,
             'id': self.id,
             'description': self.description,
-            'category': self.category.name,
-            'creator': self.user.username
+            'name': self.name,
+            
         }
 
 
@@ -67,7 +65,7 @@ class Categories(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-            'name': self.name,
+            'category': self.name,
             'id': self.id,
         }
 
