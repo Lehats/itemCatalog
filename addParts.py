@@ -109,7 +109,7 @@ Part1 = Parts(
     " alternator keep you stranded in the parking lot - AutoZone "
     "sells a variety of chrome alternators for your make and model "
     "to get you back up and running.",
-    category=Category1, user=User1)
+    category_id=Category1.id, user_id=User1.id)
 
 session.add(Part1)
 session.commit()
@@ -121,7 +121,7 @@ Part2 = Parts(
     "to turn your engine over and start it. The starter, obviously,"
     "plays a significant role in starting your vehicle, so it's "
     "imperative that it remains in tip-top condition. ",
-    category=Category1, user=User1)
+    category_id=Category1.id, user_id=User1.id)
 
 session.add(Part2)
 session.commit()
@@ -136,7 +136,7 @@ Part3 = Parts(
     "We carry a wide array of genuine OE and quality "
     "aftermarket rotors, all designed to meet or exceed "
     "your vehicles original braking power.",
-    category=Category2, user=User1)
+    category_id=Category2.id, user_id=User1.id)
 
 session.add(Part3)
 session.commit()
@@ -150,7 +150,7 @@ Part4 = Parts(
     "vehicles. Without a properly functioning CV axle, "
     "your ride can have problems "
     "turning and can even become undrivable.",
-    category=Category3, user=User1)
+    category_id=Category3.id, user_id=User1.id)
 
 session.add(Part4)
 session.commit()
@@ -161,7 +161,7 @@ Part5 = Parts(
     "transmission frees you from "
     "having to shift gears manually while you're cruising in "
     "your ride, so it should always be as easy as that.",
-    category=Category3, user=User1)
+    category_id=Category3.id, user_id=User1.id)
 
 session.add(Part5)
 session.commit()
@@ -177,7 +177,7 @@ Part6 = Parts(
     "and engineered to meet the stringent demands of today's "
     "automotive drive systems. The Drive Rite v-ribbed "
     "belt delivers long-lasting dependable belt life.",
-    category=Category4, user=User2)
+    category_id=Category4.id, user_id=User2.id)
 
 session.add(Part6)
 session.commit()
@@ -189,7 +189,7 @@ Part7 = Parts(
     "grooved, flat, or flat with flanges to meet OEM standards. A dust cover"
     "is used to eliminate the possibility of dirt and other contaminates"
     "from harming the bearing.",
-    category=Category4, user=User2)
+    category_id=Category4.id, user_id=User2.id)
 
 session.add(Part7)
 session.commit()
@@ -201,7 +201,7 @@ Part8 = Parts(
     "The copper core increases the rate of heat"
     "conduction in the sparkplug tip and improves"
     "resistance to all types of fouling.",
-    category=Category5, user=User2)
+    category_id=Category5.id, user_id=User2.id)
 
 session.add(Part8)
 session.commit()

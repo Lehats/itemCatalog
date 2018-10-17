@@ -32,7 +32,7 @@
                         <p style="color:gray">Description:</p>
                         <p>{{part.description}}</p>
                         <p style="color:gray">Category:</p>
-                        <p>{{part.category.name}}</p>
+                        <p>{{category.name}}</p>
                         <div class="editDelete">
                             <form action="{{url_for('editPart', category_id = part.category_id, part_id = part.id)}}" method="get">
                                 <button type="submit">edit part</button>

@@ -313,11 +313,12 @@ def getPart(category_id, part_id):
     '''
     session.close()
     requestedPart = session.query(Parts).filter_by(id=part_id).first()
+    categoryOfPart = session.query(Categories).filter_by(id=category_id).first()
     if 'username' in login_session:
         user = login_session['username']
         return render_template(
-            'partPrivate.html', part=requestedPart, user=user)
-    return render_template('part.html', part=requestedPart)
+            'partPrivate.html', part=requestedPart, category=categoryOfPart, user=user)
+    return render_template('part.html', part=requestedPart, category=categoryOfPart)
 
 
 # part edit page --shows form to edit a part

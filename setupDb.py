@@ -8,12 +8,37 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
+class Parts(Base):
+    __tablename__ = 'parts'
+
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
+    description = Column(String(1000))
+    category_id = Column(Integer, ForeignKey('categories.id'))
+    
+    user_id = Column(Integer, ForeignKey('users.id'))
+    
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+            'description': self.description,
+            'category': self.category.name,
+            'creator': self.user.username
+        }
+
+
 class Users(Base):
     __tablename__ = 'users'
 
     username = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     password_hash = Column(String(64))
+    user = relationship(Parts, cascade="all, delete-orphan")
 
     def hashThePassword(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -35,6 +60,7 @@ class Categories(Base):
 
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
+    category = relationship(Parts, cascade="all, delete-orphan")
     
 
     @property
@@ -46,27 +72,7 @@ class Categories(Base):
         }
 
 
-class Parts(Base):
-    __tablename__ = 'parts'
 
-    name = Column(String(80), nullable=False)
-    id = Column(Integer, primary_key=True)
-    description = Column(String(1000))
-    category_id = Column(Integer, ForeignKey('categories.id'))
-    category = relationship(Categories)#, cascade="all, delete-orphan")
-    user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship(Users)#, cascade="all, delete-orphan")
-
-    @property
-    def serialize(self):
-        """Return object data in easily serializeable format"""
-        return {
-            'name': self.name,
-            'id': self.id,
-            'description': self.description,
-            'category': self.category.name,
-            'creator': self.user.username
-        }
 
 
 
