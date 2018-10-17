@@ -306,25 +306,32 @@ def getCategory(category_id):
 # part page --shows all info of the specific part
 @app.route('/<int:category_id>/<int:part_id>')
 def getPart(category_id, part_id):
-    '''This function is called when a user requests the 
+    '''This function is called when a user requests the
     /<int:category_id>/<int:part_id> end point.
     The funtion returns depending on the log in status, either the
     private or public part page.
     '''
     session.close()
     requestedPart = session.query(Parts).filter_by(id=part_id).first()
-    categoryOfPart = session.query(Categories).filter_by(id=category_id).first()
+
+    categoryOfPart = session.query(Categories).filter_by(
+        id=category_id).first()
+
     if 'username' in login_session:
         user = login_session['username']
         return render_template(
-            'partPrivate.html', part=requestedPart, category=categoryOfPart, user=user)
-    return render_template('part.html', part=requestedPart, category=categoryOfPart)
+            'partPrivate.html',
+            part=requestedPart, category=categoryOfPart, user=user)
+
+    return render_template(
+        'part.html',
+        part=requestedPart, category=categoryOfPart)
 
 
 # part edit page --shows form to edit a part
 @app.route('/<int:category_id>/<int:part_id>/edit', methods=['GET', 'POST'])
 def editPart(category_id, part_id):
-    '''This function is called when a user requests the 
+    '''This function is called when a user requests the
     /<int:category_id>/<int:part_id>/edit end point.
     The funtion returns depending on the log in status, either the
     part page or the edit part page.
@@ -366,7 +373,7 @@ def editPart(category_id, part_id):
 # part delete page --shows form to delete a part
 @app.route('/<int:category_id>/<int:part_id>/delete', methods=['GET', 'POST'])
 def deletePart(category_id, part_id):
-    '''This function is called when a user requests the 
+    '''This function is called when a user requests the
     /<int:category_id>/<int:part_id>/delete end point.
     The funtion returns depending on the log in status, either the
     part page or the delete part page.
@@ -403,18 +410,22 @@ def getJSON():
     parts = session.query(Parts).all()
     return jsonify(Parts=[r.serialize for r in parts])
 
+
 # json data. Returns the jsonyfied entru of the requested part.
 @app.route('/<int:category_id>/<int:part_id>/JSON')
 def getPartJSON(category_id, part_id):
-    '''This function is called when a user requests the 
+    '''This function is called when a user requests the
     /<int:category_id>/<int:part_id>/JSON end point.
     The funtion returns the entry from the requested part
     in a jsonyfied format.
     '''
-    
+
     requestedPart = session.query(Parts).filter_by(id=part_id).first()
-    categoryOfRequestedPart = session.query(Categories).filter_by(id=category_id).first()
-    return jsonify(Part=[requestedPart.serialize, categoryOfRequestedPart.serialize])
+    categoryOfRequestedPart = session.query(Categories).filter_by(
+        id=category_id).first()
+    return jsonify(Part=[
+                        requestedPart.serialize,
+                        categoryOfRequestedPart.serialize])
 
 
 if (__name__ == '__main__'):

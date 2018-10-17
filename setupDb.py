@@ -17,7 +17,6 @@ class Parts(Base):
     description = Column(String(1000))
     category_id = Column(Integer, ForeignKey('categories.id'))
     user_id = Column(Integer, ForeignKey('users.id'))
-    
 
     @property
     def serialize(self):
@@ -26,7 +25,6 @@ class Parts(Base):
             'id': self.id,
             'description': self.description,
             'name': self.name,
-            
         }
 
 
@@ -59,7 +57,6 @@ class Categories(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     category = relationship(Parts, cascade="all, delete-orphan")
-    
 
     @property
     def serialize(self):
@@ -68,15 +65,6 @@ class Categories(Base):
             'category': self.name,
             'id': self.id,
         }
-
-
-
-
-
-
-
-
-
 
 engine = create_engine('sqlite:///parts.db')
 
