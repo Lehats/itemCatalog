@@ -36,10 +36,10 @@
                             <h3>Log in:</h3>
                             <form method="POST" action="/existingUser?state={{STATE}}">
                                 <p>Username:</p>
-                                    <input name="username" type="text" placeholder="username"><br>
+                                    <input name="username" type="text" placeholder="username" required><br>
                                         
                                 <p>Password:</p>
-                                    <input name="password" type="text" placeholder="Password"><br><br>
+                                    <input name="password" type="text" placeholder="Password" required><br><br>
                                     <input type="submit" value="Submit">
                             </form>                                     
                         </div>    
@@ -47,10 +47,10 @@
                             <h3>Sign up:</h3>
                             <form method="POST" action="/newUser?state={{STATE}}">
                                 <p>Username:</p>
-                                    <input name="username" type="text" placeholder="username"><br>
+                                    <input name="username" type="text" placeholder="username" required><br>
                                     
                                 <p>Password:</p>
-                                    <input name="password" type="text" placeholder="Password"><br><br>
+                                    <input name="password" type="text" placeholder="Password" required><br><br>
                                     <input type="submit" value="Submit">
                             </form>                                   
                         </div>

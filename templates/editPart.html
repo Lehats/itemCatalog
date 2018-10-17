@@ -32,9 +32,9 @@
                         <h3>Edit part : {{part.name}}</h3>
                         <form action="{{url_for('editPart', category_id = part.category_id, part_id = part.id )}}" method="POST">
                             <p>Part name:</p>
-                            <input name="partName" type="text" value={{part.name}}>
+                            <input name="partName" type="text" value={{part.name}} required>
                             <p>Description:</p>
-                            <textarea name="partDescription" id="partDescription" cols="100" rows="5"></textarea>
+                            <textarea name="partDescription" id="partDescription" required cols="100" rows="5"></textarea>
                                 <script type="text/javascript">
                                     $(function(){
                                         var locate = window.location;

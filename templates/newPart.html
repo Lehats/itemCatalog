@@ -32,9 +32,9 @@
                         <h3>Create new part:</h3>
                         <form action="{{url_for('createNewPart')}}" method="POST">
                             <p>Part name:</p>
-                            <input name="partName" type="text" placeholder="part name">
+                            <input name="partName" type="text" placeholder="part name" required>
                             <p>Description:</p>
-                            <textarea name="partDescription" placeholder="description of part..." cols="100" rows="5"></textarea>
+                            <textarea name="partDescription" placeholder="description of part..." required cols="100" rows="5"></textarea>
                             <p>Category:</p>
                             <select name="partCategory">
                                 {% for n in categories %}
