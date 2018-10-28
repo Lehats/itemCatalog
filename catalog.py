@@ -161,13 +161,13 @@ def googelConnect():
         session.add(userToAdd)
         session.commit()
         login_session['username'] = username
-        print "neuuser"
+        print ("neuuser")
         session.close()
         return "bla"
     # if so..
     else:
         login_session['username'] = username
-        print "existuser"
+        print ("existuser")
         session.close()
         return "bla"
 
@@ -224,7 +224,7 @@ def getMainPage():
     private or public main page.
     '''
     session.close()
-    print showLogin.__doc__
+    print (showLogin.__doc__)
     latestParts = session.query(Parts).order_by(Parts.id.desc()).limit(10)
     categories = session.query(Categories).group_by(Categories.name)
     if 'username' not in login_session:
